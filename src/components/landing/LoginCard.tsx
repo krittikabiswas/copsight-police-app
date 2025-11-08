@@ -6,20 +6,22 @@ import { Label } from "@/components/ui/label";
 import { Shield, Lock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useHybridTranslation } from "@/hooks/useHybridTranslation";
 
 export const LoginCard = () => {
   const [policeId, setPoliceId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useHybridTranslation();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!policeId || !password) {
       toast({
-        title: "Error",
-        description: "Please enter both Police ID and Password",
+        title: t('login.errorTitle'),
+        description: t('login.errorMessage'),
         variant: "destructive",
       });
       return;
@@ -27,10 +29,10 @@ export const LoginCard = () => {
 
     // Simulate login
     toast({
-      title: "Login Successful",
-      description: "Welcome back, Officer!",
+      title: t('login.successTitle'),
+      description: t('login.successMessage'),
     });
-    
+
     navigate("/dashboard");
   };
 
@@ -42,40 +44,40 @@ export const LoginCard = () => {
             <Shield className="h-8 w-8 text-primary" />
           </div>
         </div>
-        <CardTitle className="text-2xl">Secure Login</CardTitle>
+        <CardTitle className="text-2xl">{t('login.title')}</CardTitle>
         <CardDescription className="text-muted-foreground">
-          For Authorized Police Personnel Only
+          {t('login.subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="policeId" className="text-foreground">
-              Police ID
+              {t('login.policeId')}
             </Label>
             <div className="relative">
               <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="policeId"
                 type="text"
-                placeholder="Enter your Police ID"
+                placeholder={t('login.policeIdPlaceholder')}
                 value={policeId}
                 onChange={(e) => setPoliceId(e.target.value)}
                 className="pl-10 bg-card/50 border-border"
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password" className="text-foreground">
-              Password
+              {t('login.password')}
             </Label>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t('login.passwordPlaceholder')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pl-10 bg-card/50 border-border"
@@ -84,7 +86,7 @@ export const LoginCard = () => {
           </div>
 
           <Button type="submit" className="w-full neon-glow">
-            Log In Securely
+            {t('login.loginButton')}
           </Button>
         </form>
       </CardContent>

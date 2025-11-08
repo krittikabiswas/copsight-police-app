@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSelector } from "@/components/language-selector";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useHybridTranslation } from "@/hooks/useHybridTranslation";
 
 export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useHybridTranslation();
 
   const handleLoginClick = () => {
     if (location.pathname === '/') {
@@ -35,36 +38,30 @@ export const Header = () => {
               onClick={() => navigate("/")}
               className="text-foreground hover:text-primary"
             >
-              Home
+              {t('nav.home')}
             </Button>
             <Button
               variant="ghost"
               onClick={() => navigate("/about")}
               className="text-foreground hover:text-primary"
             >
-              About Us
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/gis-mapping")}
-              className="text-foreground hover:text-primary"
-            >
-              GIS Mapping
+              {t('nav.about')}
             </Button>
             <Button
               variant="ghost"
               onClick={() => navigate("/register")}
               className="text-foreground hover:text-primary"
             >
-              Register
+              {t('nav.register')}
             </Button>
+            <LanguageSelector />
             <ThemeToggle />
             <Button
               variant="default"
               onClick={handleLoginClick}
               className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              Login
+              {t('nav.login')}
             </Button>
           </div>
         </nav>

@@ -10,6 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescript
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useHybridTranslation } from "@/hooks/useHybridTranslation";
 
 const RANKS = [
   "Constable",
@@ -61,6 +62,7 @@ interface FormData {
 
 const Register = () => {
   const { toast } = useToast();
+  const { t } = useHybridTranslation();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     policeId: "",
@@ -103,42 +105,42 @@ const Register = () => {
     return "bg-green-500";
   };
 
-const verifyPoliceId = async () => {
-  setIsVerifying(true);
-  try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1200));
+  const verifyPoliceId = async () => {
+    setIsVerifying(true);
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1200));
 
-    // Check against dummy ID list
-    const verified = VALID_POLICE_IDS.includes(formData.policeId.trim().toUpperCase());
+      // Check against dummy ID list
+      const verified = VALID_POLICE_IDS.includes(formData.policeId.trim().toUpperCase());
 
-    setIsVerified(verified);
-    toast({
-      title: verified ? "ID Verified ✅" : "Verification Failed ❌",
-      description: verified 
-        ? "Your Police ID has been successfully verified with the database."
-        : "No matching Police ID found. Please recheck your entry.",
-      variant: verified ? "default" : "destructive",
-    });
-  } catch (error) {
-    toast({
-      title: "Verification Error",
-      description: "An error occurred during verification. Please try again.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsVerifying(false);
-  }
-};
+      setIsVerified(verified);
+      toast({
+        title: verified ? t('register.idVerified') : t('register.verificationFailed'),
+        description: verified
+          ? t('register.idVerifiedDesc')
+          : t('register.verificationFailedDesc'),
+        variant: verified ? "default" : "destructive",
+      });
+    } catch (error) {
+      toast({
+        title: t('register.verificationError'),
+        description: t('register.verificationErrorDesc'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isVerified) {
       toast({
-        title: "Verification Required",
-        description: "Please verify your Police ID before proceeding.",
+        title: t('register.verificationRequired'),
+        description: t('register.verificationRequiredDesc'),
         variant: "destructive",
       });
       return;
@@ -146,8 +148,8 @@ const verifyPoliceId = async () => {
 
     if (formData.password !== formData.confirmPassword) {
       toast({
-        title: "Password Mismatch",
-        description: "Password and Confirm Password must match.",
+        title: t('register.passwordMismatch'),
+        description: t('register.passwordMismatchDesc'),
         variant: "destructive",
       });
       return;
@@ -155,8 +157,8 @@ const verifyPoliceId = async () => {
 
     if (!formData.email.endsWith("@statepolice.gov")) {
       toast({
-        title: "Invalid Email",
-        description: "Please use your official @statepolice.gov email address.",
+        title: t('register.invalidEmail'),
+        description: t('register.invalidEmailDesc'),
         variant: "destructive",
       });
       return;
@@ -164,8 +166,8 @@ const verifyPoliceId = async () => {
 
     if (formData.mobile.length !== 10 || !/^\d+$/.test(formData.mobile)) {
       toast({
-        title: "Invalid Mobile Number",
-        description: "Please enter a valid 10-digit mobile number.",
+        title: t('register.invalidMobile'),
+        description: t('register.invalidMobileDesc'),
         variant: "destructive",
       });
       return;
@@ -173,8 +175,8 @@ const verifyPoliceId = async () => {
 
     if (passwordStrength < 75) {
       toast({
-        title: "Weak Password",
-        description: "Please choose a stronger password.",
+        title: t('register.weakPassword'),
+        description: t('register.weakPasswordDesc'),
         variant: "destructive",
       });
       return;
@@ -182,8 +184,8 @@ const verifyPoliceId = async () => {
 
     if (!formData.termsAccepted) {
       toast({
-        title: "Terms Not Accepted",
-        description: "Please accept the terms and conditions to proceed.",
+        title: t('register.termsNotAccepted'),
+        description: t('register.termsNotAcceptedDesc'),
         variant: "destructive",
       });
       return;
@@ -195,8 +197,8 @@ const verifyPoliceId = async () => {
       setShowSuccessDialog(true);
     } catch (error) {
       toast({
-        title: "Registration Failed",
-        description: "An error occurred during registration. Please try again.",
+        title: t('register.registrationFailed'),
+        description: t('register.registrationFailedDesc'),
         variant: "destructive",
       });
     }
@@ -211,212 +213,212 @@ const verifyPoliceId = async () => {
         backgroundPosition: "center right",
       }}
     >
-  {/* lighten background slightly to reduce contrast and make card pop */}
-  <div className="absolute inset-0 bg-white/30 mix-blend-overlay" aria-hidden />
+      {/* lighten background slightly to reduce contrast and make card pop */}
+      <div className="absolute inset-0 bg-white/30 mix-blend-overlay" aria-hidden />
 
       <div className="relative container mx-auto px-4 py-12">
-      <Card className="max-w-2xl mx-auto glass-card border-primary/20 shadow-xl bg-white/90 text-black">
-      
-<CardHeader className="text-center">
-  <CardTitle className="text-3xl font-semibold text-blue-700">
-    Register for CopSight
-  </CardTitle>
-  <CardDescription className="text-gray-600 text-base mt-2">
-    Join the next generation of police recognition and performance tracking.
-  </CardDescription>
-</CardHeader>
+        <Card className="max-w-2xl mx-auto glass-card border-primary/20 shadow-xl bg-white/90 text-black">
 
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input
-                  id="fullName"
-                  required
-                  value={formData.fullName}
-                  onChange={(e) => handleInputChange("fullName", e.target.value)}
-                  className="bg-white/100 text-black border-gray-300"
-                />
-              </div>
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl font-semibold text-blue-700">
+              {t('register.title')}
+            </CardTitle>
+            <CardDescription className="text-gray-600 text-base mt-2">
+              {t('register.subtitle')}
+            </CardDescription>
+          </CardHeader>
 
-              <div>
-                <Label htmlFor="policeId">Police ID</Label>
-                <div className="flex gap-2">
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="fullName">{t('register.fullName')}</Label>
                   <Input
-                    id="policeId"
+                    id="fullName"
                     required
-                    value={formData.policeId}
-                    onChange={(e) => {
-                      handleInputChange("policeId", e.target.value);
-                      setIsVerified(false);
-                    }}
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange("fullName", e.target.value)}
                     className="bg-white/100 text-black border-gray-300"
                   />
-                  <Button
-                    type="button"
-                    onClick={verifyPoliceId}
-                    disabled={isVerifying || !formData.policeId}
-                    className="min-w-[100px]"
-                  >
-                    {isVerifying ? "Verifying..." : "Verify ID"}
-                  </Button>
                 </div>
-                {formData.policeId && !isVerifying && (
-                  <div className="flex items-center gap-2 mt-2 text-sm">
-                    {isVerified ? (
-                      <>
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
-                        <span className="text-green-500">ID Verified</span>
-                      </>
-                    ) : (
-                      <>
-                        <XCircle className="h-4 w-4 text-destructive" />
-                        <span className="text-destructive">Not Verified</span>
-                      </>
-                    )}
+
+                <div>
+                  <Label htmlFor="policeId">{t('register.policeId')}</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="policeId"
+                      required
+                      value={formData.policeId}
+                      onChange={(e) => {
+                        handleInputChange("policeId", e.target.value);
+                        setIsVerified(false);
+                      }}
+                      className="bg-white/100 text-black border-gray-300"
+                    />
+                    <Button
+                      type="button"
+                      onClick={verifyPoliceId}
+                      disabled={isVerifying || !formData.policeId}
+                      className="min-w-[100px]"
+                    >
+                      {isVerifying ? t('register.verifying') : t('register.verify')}
+                    </Button>
                   </div>
-                )}
-              </div>
+                  {formData.policeId && !isVerifying && (
+                    <div className="flex items-center gap-2 mt-2 text-sm">
+                      {isVerified ? (
+                        <>
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          <span className="text-green-500">{t('register.verified')}</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="h-4 w-4 text-destructive" />
+                          <span className="text-destructive">Not Verified</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
 
-              <div>
-                <Label htmlFor="email">Official Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  placeholder="officer@statepolice.gov"
-                  className="bg-white/100 text-black border-gray-300"
-                />
-              </div>
+                <div>
+                  <Label htmlFor="email">{t('register.email')}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    placeholder="officer@statepolice.gov"
+                    className="bg-white/100 text-black border-gray-300"
+                  />
+                </div>
 
-              <div>
-                <Label htmlFor="mobile">Mobile Number</Label>
-                <Input
-                  id="mobile"
-                  required
-                  value={formData.mobile}
-                  onChange={(e) => handleInputChange("mobile", e.target.value)}
-                  maxLength={10}
-                  placeholder="10-digit number"
-                  className="bg-white/100 text-black border-gray-300"
-                />
-              </div>
+                <div>
+                  <Label htmlFor="mobile">{t('register.mobile')}</Label>
+                  <Input
+                    id="mobile"
+                    required
+                    value={formData.mobile}
+                    onChange={(e) => handleInputChange("mobile", e.target.value)}
+                    maxLength={10}
+                    placeholder={t('register.mobileHelper')}
+                    className="bg-white/100 text-black border-gray-300"
+                  />
+                </div>
 
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
-                  className="bg-white/100 text-black border-gray-300"
-                />
-                <div className="mt-2">
-                  <Progress value={passwordStrength} className={getStrengthColor(passwordStrength)} />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {passwordStrength <= 25 && "Weak"}
-                    {passwordStrength > 25 && passwordStrength <= 50 && "Medium"}
-                    {passwordStrength > 50 && passwordStrength <= 75 && "Strong"}
-                    {passwordStrength > 75 && "Very Strong"}
-                  </p>
+                <div>
+                  <Label htmlFor="password">{t('register.password')}</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    value={formData.password}
+                    onChange={(e) => handleInputChange("password", e.target.value)}
+                    className="bg-white/100 text-black border-gray-300"
+                  />
+                  <div className="mt-2">
+                    <Progress value={passwordStrength} className={getStrengthColor(passwordStrength)} />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {passwordStrength <= 25 && t('register.weak')}
+                      {passwordStrength > 25 && passwordStrength <= 50 && t('register.medium')}
+                      {passwordStrength > 50 && passwordStrength <= 75 && t('register.strong')}
+                      {passwordStrength > 75 && t('register.strong')}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="confirmPassword">{t('register.confirmPassword')}</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    required
+                    value={formData.confirmPassword}
+                    onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                    className="bg-white/100 text-black border-gray-300"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="rank">{t('register.rank')}</Label>
+                  <Select
+                    value={formData.rank}
+                    onValueChange={(value) => handleInputChange("rank", value)}
+                  >
+                    <SelectTrigger className="bg-white/100 text-black border-gray-300">
+                      <SelectValue placeholder={t('register.selectRank')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {RANKS.map((rank) => (
+                        <SelectItem key={rank} value={rank}>
+                          {rank}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="district">{t('register.district')}</Label>
+                  <Select
+                    value={formData.district}
+                    onValueChange={(value) => handleInputChange("district", value)}
+                  >
+                    <SelectTrigger className="bg-white/100 text-black border-gray-300">
+                      <SelectValue placeholder={t('register.selectDistrict')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DISTRICTS.map((district) => (
+                        <SelectItem key={district} value={district}>
+                          {district}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="terms"
+                    checked={formData.termsAccepted}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("termsAccepted", checked === true)
+                    }
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm text-orange-600 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    I confirm that I am an authorized police personnel
+                  </label>
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                  className="bg-white/100 text-black border-gray-300"
-                />
-              </div>
+              <Button type="submit" className="w-full">
+                {t('register.registerButton')}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
 
-              <div>
-                <Label htmlFor="rank">Rank</Label>
-                <Select
-                  value={formData.rank}
-                  onValueChange={(value) => handleInputChange("rank", value)}
-                >
-                  <SelectTrigger className="bg-white/100 text-black border-gray-300">
-                    <SelectValue placeholder="Select your rank" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {RANKS.map((rank) => (
-                      <SelectItem key={rank} value={rank}>
-                        {rank}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label htmlFor="district">District / Police Station</Label>
-                <Select
-                  value={formData.district}
-                  onValueChange={(value) => handleInputChange("district", value)}
-                >
-                  <SelectTrigger className="bg-white/100 text-black border-gray-300">
-                    <SelectValue placeholder="Select your district" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DISTRICTS.map((district) => (
-                      <SelectItem key={district} value={district}>
-                        {district}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="terms"
-                  checked={formData.termsAccepted}
-                  onCheckedChange={(checked) => 
-                    handleInputChange("termsAccepted", checked === true)
-                  }
-                />
-                <label
-                  htmlFor="terms"
-                  className="text-sm text-orange-600 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  I confirm that I am an authorized police personnel
-                </label>
-              </div>
-            </div>
-
-            <Button type="submit" className="w-full">
-              Register
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Registration Successful!</AlertDialogTitle>
-            <AlertDialogDescription>
-              Please check your email for verification before logging in.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => window.location.href = "/"}>
-              Return to Home
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('register.successTitle')}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t('register.successMessage')}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => window.location.href = "/"}>
+                {t('register.successButton')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
-      </section>
+    </section>
   );
 };
 
