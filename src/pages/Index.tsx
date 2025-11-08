@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { LoginCard } from "@/components/landing/LoginCard";
 import heroImage from "@/assets/police-hero-bg.jpg";
 import badgeImage from "@/assets/police-badge.png";
 
 const Index = () => {
+  const location = useLocation();
   const [showLogin, setShowLogin] = useState(false);
   const loginRef = useRef<HTMLDivElement>(null);
 
@@ -17,6 +19,15 @@ const Index = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+
+    // Check if we should scroll to login section
+    const state = location.state as { scrollToLogin?: boolean };
+    if (state?.scrollToLogin) {
+      loginRef.current?.scrollIntoView({ behavior: "smooth" });
+      // Clear the state
+      window.history.replaceState({}, document.title);
+    }
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [showLogin]);
 
@@ -46,9 +57,9 @@ const Index = () => {
             className="w-24 h-24 mx-auto animate-float"
           />
           <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
-            Smart Analytics Dashboard
+            CopSight
             <br />
-            <span className="text-primary">for Police Good Work Recognition</span>
+            {/* <span className="text-primary">for Police Good Work Recognition</span> */}
           </h1>
           <p className="text-lg md:text-xl text-accent font-medium">
             AI-Powered Transparency & Recognition System
@@ -62,17 +73,18 @@ const Index = () => {
         {/* Scroll Indicator */}
         <button
           onClick={scrollToLogin}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce cursor-pointer group"
+          className="absolute bottom-8 inset-x-0 z-10 flex justify-center animate-bounce cursor-pointer group"
         >
-          <div className="flex flex-col items-center gap-2 text-accent group-hover:text-primary transition-colors">
+          <div className="flex flex-col items-center gap-2 text-accent group-hover:text-primary transition-colors text-center">
             <span className="text-sm font-medium">Swipe Down to Login</span>
-            <ChevronDown className="h-8 w-8" />
+            <ChevronDown className="h-4 w-8" />
           </div>
         </button>
       </section>
 
       {/* Login Section */}
       <section 
+        id="login-section"
         ref={loginRef}
         className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-background to-muted/20"
       >

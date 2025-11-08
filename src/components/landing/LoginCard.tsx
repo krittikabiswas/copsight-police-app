@@ -35,7 +35,7 @@ export const LoginCard = () => {
   };
 
   return (
-    <Card className="w-full max-w-md glass-card border-primary/30 neon-glow">
+    <Card className="w-full max-w-md glass-card border-primary/10 neon-glow">
       <CardHeader className="text-center">
         <div className="flex justify-center mb-4">
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">

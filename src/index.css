@@ -45,8 +45,8 @@ All colors MUST be HSL.
     --gradient-card: linear-gradient(135deg, hsl(220, 25%, 12%) 0%, hsl(220, 20%, 15%) 100%);
     --gradient-hero: linear-gradient(180deg, hsl(220, 30%, 8%) 0%, hsl(220, 35%, 15%) 100%);
     
-    --glow-primary: 0 0 20px hsla(220, 90%, 55%, 0.5);
-    --glow-accent: 0 0 30px hsla(195, 100%, 50%, 0.4);
+    --glow-primary: 0 0 12px hsla(220, 90%, 55%, 0.25);
+    --glow-accent: 0 0 16px hsla(195, 100%, 50%, 0.2);
     
     --sidebar-background: 220 30% 10%;
     --sidebar-foreground: 210 100% 98%;
@@ -70,9 +70,12 @@ All colors MUST be HSL.
   }
   
   .glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Soft bluish-white glass effect */
+    background: rgba(221, 224, 227, 0.55); /* subtle bluish white */
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 24px rgba(211, 213, 221, 0.12);
   }
   
   .neon-glow {
@@ -100,10 +103,10 @@ All colors MUST be HSL.
   
   @keyframes glow {
     from {
-      box-shadow: 0 0 10px hsla(220, 90%, 55%, 0.3);
+      box-shadow: 0 0 8px hsla(220, 90%, 55%, 0.15);
     }
     to {
-      box-shadow: 0 0 20px hsla(220, 90%, 55%, 0.6), 0 0 30px hsla(195, 100%, 50%, 0.3);
+      box-shadow: 0 0 12px hsla(220, 90%, 55%, 0.9), 0 0 16px hsla(195, 98%, 35%, 0.6);
     }
   }
 }
