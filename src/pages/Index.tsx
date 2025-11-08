@@ -29,7 +29,7 @@ const Index = () => {
     }
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [showLogin]);
+  }, [showLogin, location.state]);
 
   const scrollToLogin = () => {
     loginRef.current?.scrollIntoView({ behavior: "smooth" });

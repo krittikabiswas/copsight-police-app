@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const Header = () => {
@@ -45,11 +46,19 @@ export const Header = () => {
             </Button>
             <Button
               variant="ghost"
+              onClick={() => navigate("/gis-mapping")}
+              className="text-foreground hover:text-primary"
+            >
+              GIS Mapping
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => navigate("/register")}
               className="text-foreground hover:text-primary"
             >
               Register
             </Button>
+            <ThemeToggle />
             <Button
               variant="default"
               onClick={handleLoginClick}
