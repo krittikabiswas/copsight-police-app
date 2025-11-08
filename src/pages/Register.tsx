@@ -241,11 +241,11 @@ const verifyPoliceId = async () => {
       {/* lighten background slightly to reduce contrast and make card pop */}
       <div className="absolute inset-0 bg-white/30 mix-blend-overlay" aria-hidden />
 
-      <div className="relative container mx-auto px-4 py-12">
-        <Card className="max-w-2xl mx-auto glass-card border-primary/20 shadow-xl bg-white/90 text-black">
+      <div className="relative container mx-auto px-4 py-8">
+        <Card className="max-w-lg mx-auto glass-card border-primary/20 shadow-xl bg-white/90 text-black">
       
-<CardHeader className="text-center">
-  <CardTitle className="text-3xl font-semibold text-blue-700">
+<CardHeader className="text-center p-6">
+  <CardTitle className="text-2xl font-semibold text-blue-700">
     Register for CopSight
   </CardTitle>
   <CardDescription className="text-gray-600 text-base mt-2">
@@ -253,9 +253,9 @@ const verifyPoliceId = async () => {
   </CardDescription>
 </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-3">
               <div>
                 <Label htmlFor="fullName">Full Name</Label>
                 <Input
