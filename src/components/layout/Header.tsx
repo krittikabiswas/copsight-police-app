@@ -18,8 +18,32 @@ export const Header = () => {
     }
   };
 
+  const handleHomeClick = () => {
+    if (location.pathname === '/') {
+      // If already on home page, scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // If on another page, navigate to home and scroll to top
+      navigate('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleAboutClick = () => {
+    if (location.pathname === '/') {
+      // If on home page, scroll to about section
+      const aboutSection = document.getElementById('about-section');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If on other pages, navigate to home and then scroll to about section
+      navigate('/', { state: { scrollToAbout: true } });
+    }
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#002642] border-b border-border">
       <div className="container mx-auto px-4 py-3">
         <nav className="flex items-center justify-between">
           {/* Logo/Brand */}
@@ -31,14 +55,14 @@ export const Header = () => {
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
-              onClick={() => navigate("/")}
+              onClick={handleHomeClick}
               className="text-foreground hover:text-primary"
             >
               Home
             </Button>
             <Button
               variant="ghost"
-              onClick={() => navigate("/about")}
+              onClick={handleAboutClick}
               className="text-foreground hover:text-primary"
             >
               About Us

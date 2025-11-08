@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import registerBg from "@/assets/register-bg.jpg";
+import { X } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +63,14 @@ interface FormData {
 
 const Register = () => {
   const { toast } = useToast();
+  const [mounted, setMounted] = useState(false);
+
+  // Add mount effect
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     policeId: "",
@@ -202,20 +212,37 @@ const verifyPoliceId = async () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center"
+      className={`relative min-h-screen flex items-center justify-center transition-opacity duration-500 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
       style={{
         backgroundImage: `url(${registerBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center right",
       }}
     >
-  {/* lighten background slightly to reduce contrast and make card pop */}
-  <div className="absolute inset-0 bg-white/30 mix-blend-overlay" aria-hidden />
+      {/* Close button */}
+      <button
+        onClick={handleClose}
+        className="absolute top-6 right-6 z-50 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
+        aria-label="Close registration"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
+      {/* lighten background slightly to reduce contrast and make card pop */}
+      <div className="absolute inset-0 bg-white/30 mix-blend-overlay" aria-hidden />
 
       <div className="relative container mx-auto px-4 py-12">
-      <Card className="max-w-2xl mx-auto glass-card border-primary/20 shadow-xl bg-white/90 text-black">
+        <Card className="max-w-2xl mx-auto glass-card border-primary/20 shadow-xl bg-white/90 text-black">
       
 <CardHeader className="text-center">
   <CardTitle className="text-3xl font-semibold text-blue-700">

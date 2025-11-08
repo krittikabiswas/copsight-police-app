@@ -6,6 +6,41 @@
 All colors MUST be HSL.
 */
 
+@keyframes slowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+}
+
+.animate-slow-bounce {
+  animation: slowBounce 3s infinite ease-in-out;
+}
+
+/* Page Transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 500ms, transform 500ms;
+}
+
 @layer base {
   :root {
     --background: 220 30% 8%;
