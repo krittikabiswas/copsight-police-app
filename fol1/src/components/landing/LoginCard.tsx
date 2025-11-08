@@ -13,26 +13,55 @@ export const LoginCard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!policeId || !password) {
+  const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!policeId || !password) {
+    toast({
+      title: "Missing Fields",
+      description: "Please enter both Police ID and Password.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("police_id", policeId);
+    formData.append("password", password);
+
+    const response = await fetch("http://127.0.0.1:8000/auth/login", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
       toast({
-        title: "Error",
-        description: "Please enter both Police ID and Password",
+        title: "Login Successful ✅",
+        description: `Welcome back, ${result.user.full_name}!`,
+      });
+
+      // Optionally save session info in localStorage
+      localStorage.setItem("user", JSON.stringify(result.user));
+
+      navigate("/dashboard");
+    } else {
+      toast({
+        title: "Login Failed",
+        description: result.message || "Invalid credentials. Please try again.",
         variant: "destructive",
       });
-      return;
     }
-
-    // Simulate login
+  } catch (error) {
     toast({
-      title: "Login Successful",
-      description: "Welcome back, Officer!",
+      title: "Server Error",
+      description: "Unable to connect to the backend. Please check your connection.",
+      variant: "destructive",
     });
-    
-    navigate("/dashboard");
-  };
+  }
+};
 
   return (
     <Card className="w-full max-w-md glass-card border-primary/10 neon-glow">

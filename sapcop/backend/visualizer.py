@@ -8,7 +8,7 @@ plt.switch_backend("Agg")
 
 def generate_graphs(dataset_name, df, preds):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    base_dir = r"C:\Users\SAPTARSHI MONDAL\Hack4Safety\generated_graphs"
+    base_dir = r"C:\Users\SAPTARSHI MONDAL\Copsight\copsight-police-app\sapcop\generated_graphs"
     save_dir = os.path.join(base_dir, f"{dataset_name}_{timestamp}")
     os.makedirs(save_dir, exist_ok=True)
 

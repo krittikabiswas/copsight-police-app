@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardAnalysis } from "@/components/dashboard/DashboardAnalysis";
+import { Firreport } from "@/components/dashboard/Firreport";
 import { BadgesSection } from "@/components/dashboard/BadgesSection";
 import { GISMapping } from "@/components/dashboard/GISMapping";
 import { Leaderboard } from "@/components/dashboard/Leaderboard";
 import { Community } from "@/components/dashboard/Community";
 
-export type DashboardSection = "analysis" | "badges" | "gis" | "leaderboard" | "community";
+export type DashboardSection = "analysis" | "firreport" | "badges" | "gis" | "leaderboard" | "community";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState<DashboardSection>("analysis");
@@ -15,6 +16,8 @@ const Dashboard = () => {
     switch (activeSection) {
       case "analysis":
         return <DashboardAnalysis />;
+      case "firreport":
+        return <Firreport />;
       case "badges":
         return <BadgesSection />;
       case "gis":

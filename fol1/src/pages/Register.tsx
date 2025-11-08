@@ -86,6 +86,8 @@ const Register = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -200,13 +202,40 @@ const verifyPoliceId = async () => {
     }
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setShowSuccessDialog(true);
-    } catch (error) {
+       const formDataToSend = new FormData();
+  formDataToSend.append("full_name", formData.fullName);
+  formDataToSend.append("police_id", formData.policeId);
+  formDataToSend.append("email", formData.email);
+  formDataToSend.append("mobile", formData.mobile);
+  formDataToSend.append("password", formData.password);
+  formDataToSend.append("rank", formData.rank);
+  formDataToSend.append("district", formData.district);
+  formDataToSend.append("terms_accepted", formData.termsAccepted.toString());
+
+  const response = await fetch("http://127.0.0.1:8000/auth/register", {
+    method: "POST",
+    body: formDataToSend,
+  });
+
+  const result = await response.json();
+
+  if (result.status === "success") {
+    toast({
+      title: "Registration Successful 🎉",
+      description: "Your account has been registered successfully!",
+    });
+    setShowSuccessDialog(true);
+  } else {
+    toast({
+      title: "Registration Failed",
+      description: result.message || "Could not register user.",
+      variant: "destructive",
+    });
+  }
+}catch (error) {
       toast({
-        title: "Registration Failed",
-        description: "An error occurred during registration. Please try again.",
+        title: "Server Error",
+        description: "Unable to connect to the backend. Please check the server.",
         variant: "destructive",
       });
     }

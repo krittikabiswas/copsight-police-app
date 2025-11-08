@@ -3,7 +3,7 @@ import os
 
 MODEL_REGISTRY = {}
 
-def load_models(model_dir="C:\\Users\\SAPTARSHI MONDAL\\Hack4Safety\\saved_models"):
+def load_models(model_dir="C:\\Users\\SAPTARSHI MONDAL\\Copsight\\copsight-police-app\\sapcop\\saved_models"):
     """
     Loads all trained models (.pkl) into a registry dictionary.
     """

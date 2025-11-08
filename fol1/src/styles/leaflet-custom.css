@@ -1,0 +1,69 @@
+/* Custom Leaflet Map Styles */
+
+/* Map Container */
+.leaflet-container {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+}
+
+/* Custom marker styling */
+.leaflet-marker-icon {
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-popup-content {
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+/* Control styling */
+.leaflet-control {
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-control-zoom,
+.leaflet-control-layers {
+  background-color: white;
+  border: none;
+}
+
+.leaflet-control-zoom a,
+.leaflet-control-layers-toggle {
+  background-color: white;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.leaflet-control-zoom a:hover,
+.leaflet-control-layers-toggle:hover {
+  background-color: #f3f4f6;
+}
+
+/* Layer toggle styling */
+.leaflet-control-layers-expanded {
+  background-color: white;
+}
+
+/* Attribution control */
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+}
+
+/* Tooltip styling */
+.leaflet-tooltip {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}

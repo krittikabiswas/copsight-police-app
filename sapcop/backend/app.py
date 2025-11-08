@@ -19,14 +19,14 @@ app.add_middleware(
 
 app.mount(
     "/graphs",
-    StaticFiles(directory="C:/Users/SAPTARSHI MONDAL/Hack4Safety/generated_graphs"),
+    StaticFiles(directory="C:/Users/SAPTARSHI MONDAL/Copsight/copsight-police-app/sapcop/generated_graphs"),
     name="graphs",
 )
 
 # --- Load Models Once at Startup ---
 @app.on_event("startup")
 def startup_event():
-    load_models("C:\\Users\\SAPTARSHI MONDAL\\Hack4Safety\\saved_models")
+    load_models("C:\\Users\\SAPTARSHI MONDAL\\Copsight\\copsight-police-app\\sapcop\\saved_models")
 
 
 @app.post("/predict/")

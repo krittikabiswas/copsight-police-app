@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Trophy, Map, Users, MessageSquare, LogOut, Shield } from "lucide-react";
+import { BarChart3, Trophy, Map, Users, MessageSquare, LogOut, Shield, FileSpreadsheet } from "lucide-react";
 import { DashboardSection } from "@/pages/Dashboard";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ export const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
 
   const menuItems = [
     { id: "analysis" as DashboardSection, label: "Dashboard Analysis", icon: BarChart3 },
+    { id: "firreport" as DashboardSection, label: "FIR Report", icon: FileSpreadsheet },
     { id: "badges" as DashboardSection, label: "Badges & Gamification", icon: Trophy },
     { id: "gis" as DashboardSection, label: "GIS Mapping", icon: Map },
     { id: "leaderboard" as DashboardSection, label: "Leaderboard", icon: Users },
