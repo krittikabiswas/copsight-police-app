@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Leaflet CSS */
+@import 'leaflet/dist/leaflet.css';
+@import './styles/leaflet-custom.css';
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 10%;
+
+    --primary: 220 90% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 95%;
+    --secondary-foreground: 220 30% 10%;
+
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 195 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --gold: 45 100% 50%;
+    --gold-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 85%;
+    --input: 220 15% 90%;
+    --ring: 220 90% 55%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(220, 90%, 55%) 0%, hsl(195, 100%, 50%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(220, 15%, 98%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220, 15%, 98%) 0%, hsl(220, 15%, 95%) 100%);
+
+    --glow-primary: 0 0 12px hsla(220, 90%, 55%, 0.15);
+    --glow-accent: 0 0 16px hsla(195, 100%, 50%, 0.15);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 30% 10%;
+    --sidebar-primary: 220 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 92%;
+    --sidebar-accent-foreground: 220 30% 10%;
+    --sidebar-border: 220 15% 88%;
+    --sidebar-ring: 220 90% 55%;
+  }
+
+  .dark {
+    --background: 220 30% 8%;
+    --foreground: 210 100% 98%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 210 100% 98%;
+
+    --popover: 220 30% 10%;
+    --popover-foreground: 210 100% 98%;
+
+    --primary: 220 90% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 25% 18%;
+    --secondary-foreground: 210 100% 98%;
+
+    --muted: 220 20% 15%;
+    --muted-foreground: 215 15% 65%;
+
+    --accent: 195 100% 50%;
+    --accent-foreground: 220 30% 8%;
+
+    --gold: 45 100% 60%;
+    --gold-foreground: 220 30% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 20%;
+    --input: 220 25% 15%;
+    --ring: 220 90% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(220, 90%, 55%) 0%, hsl(195, 100%, 50%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(220, 25%, 12%) 0%, hsl(220, 20%, 15%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220, 30%, 8%) 0%, hsl(220, 35%, 15%) 100%);
+
+    --glow-primary: 0 0 12px hsla(220, 90%, 55%, 0.25);
+    --glow-accent: 0 0 16px hsla(195, 100%, 50%, 0.2);
+
+    --sidebar-background: 220 30% 10%;
+    --sidebar-foreground: 210 100% 98%;
+    --sidebar-primary: 220 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 25% 15%;
+    --sidebar-accent-foreground: 210 100% 98%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 220 90% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
+  }
+
+  .glass-card {
+    /* Light mode glass effect */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(220, 220, 220, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .dark .glass-card {
+    /* Dark mode glass effect */
+    background: rgba(30, 35, 45, 0.55);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .neon-glow {
+    box-shadow: var(--glow-primary);
+  }
+
+  .neon-glow-accent {
+    box-shadow: var(--glow-accent);
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 8px hsla(220, 90%, 55%, 0.15);
+    }
+
+    to {
+      box-shadow: 0 0 12px hsla(220, 90%, 55%, 0.9), 0 0 16px hsla(195, 98%, 35%, 0.6);
+    }
+  }
+
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 3s ease infinite;
+  }
+
+  @keyframes gradient-x {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .border-gradient-to-r {
+    position: relative;
+    border: double 2px transparent;
+    border-radius: 9999px;
+    background-image: linear-gradient(var(--background), var(--background)), var(--gradient-border);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+
+  .border-gradient-to-br {
+    position: relative;
+    border: double 2px transparent;
+    border-radius: 9999px;
+    background-image: linear-gradient(var(--background), var(--background)), var(--gradient-border);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+}
