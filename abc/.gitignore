@@ -1,10 +1,15 @@
-# Ignore local data file used for development
+# Local development helpers
 data.py
 
-# Ignore Python bytecode cache directories and files
+# Python bytecode / caches
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+*.so
+
 # Logs
+logs/
 logs
 *.log
 npm-debug.log*
@@ -13,12 +18,76 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Node / build artifacts
+node_modules/
+.pnp.cjs
+.pnp.loader.mjs
+.yarn/
+dist/
+dist-ssr/
+build/
+.vite/
+.parcel-cache/
+.turbo/
+.next/
+.nuxt/
+.expo/
+expo-env.d.ts
+coverage/
+*.lcov
 *.local
 
-# Editor directories and files
+# Environment & tool files
+.env
+.env.*
+.envrc
+.npmrc
+.nvmrc
+.python-version
+
+# Python environments & build outputs
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+*.egg-info/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+
+# Generated assets and datasets
+generated_graphs/
+saved_models/
+synthetic_cctns_datasets/
+backend/__pycache__/
+backend/.pytest_cache/
+frontend/dist/
+frontend/node_modules/
+
+# Database / dumps
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.sql
+*.sqlite-journal
+
+# Backups & temp files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swn
+*.swo
+*.orig
+*.rej
+
+# OS & editor files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -28,3 +97,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Misc secrets
+*.pem
+*.key
+tmp/

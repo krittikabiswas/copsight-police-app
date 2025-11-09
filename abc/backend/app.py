@@ -44,14 +44,14 @@ app.add_middleware(
 # ----------------------- STATIC FILES -----------------------
 app.mount(
     "/graphs",
-    StaticFiles(directory="C:/Users/SAPTARSHI MONDAL/Copsight/copsight-police-app/fol1/generated_graphs"),
+    StaticFiles(directory="C:/Users/SAPTARSHI MONDAL/Copsight/copsight-police-app/abc/generated_graphs"),
     name="graphs",
 )
 
 # ----------------------- MODEL LOAD -----------------------
 @app.on_event("startup")
 def startup_event():
-    load_models("C:/Users/SAPTARSHI MONDAL/Copsight/copsight-police-app/fol1/saved_models")
+    load_models("C:/Users/SAPTARSHI MONDAL/Copsight/copsight-police-app/abc/saved_models")
     print("✅ Models loaded successfully!")
 
 

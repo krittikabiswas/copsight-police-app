@@ -5,9 +5,10 @@ import pdfplumber
 import google.generativeai as genai
 from typing import Dict, Any
 from PIL import Image
+from dotenv import load_dotenv
 
 # ✅ Configure Gemini
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDzNHyrJoy8waLO8rMg-j838kcY-eUMEzI"
+os.environ["GOOGLE_API_KEY"] =  load_dotenv(dotenv_path="C:\\Users\\SAPTARSHI MONDAL\\Copsight\\copsight-police-app\\.env") or os.getenv("GOOGLE_API_KEY", "")
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 # -------------------------------------------------------
