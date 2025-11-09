@@ -98,172 +98,6 @@ export const DashboardAnalysis = () => {
     }
   };
 
-  const handleDownloadPdf = () => {
-    if (!hasReport) {
-      toast({
-        title: "No Report Available",
-        description: "Upload a dataset to generate a report before downloading.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsDownloading(true);
-
-    try {
-      const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
-      const margin = 15;
-      const lineHeight = 7;
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      let cursorY = margin;
-
-      const ensureSpace = (height = lineHeight) => {
-        if (cursorY + height > pageHeight - margin) {
-          pdf.addPage();
-          cursorY = margin;
-        }
-      };
-
-      const setFont = (style: "normal" | "bold", size: number, color = 50) => {
-        pdf.setFont("helvetica", style);
-        pdf.setFontSize(size);
-        pdf.setTextColor(color);
-      };
-
-      const sanitize = (text: string) =>
-        text
-          .replace(/\r/g, "")
-          .replace(/\s+/g, " ")
-          .replace(/[#*_`>-]+/g, "")
-          .replace(/\[(.*?)\]\((.*?)\)/g, "$1")
-          .trim();
-
-      const addHeading = (text: string, size = 16) => {
-        const cleaned = sanitize(text);
-        if (!cleaned) return;
-        setFont("bold", size, 30);
-        ensureSpace();
-        pdf.text(cleaned, margin, cursorY);
-        cursorY += lineHeight;
-      };
-
-      const addSpacer = (height = lineHeight / 2) => {
-        ensureSpace(height);
-        cursorY += height;
-      };
-
-      const addParagraph = (text: string, size = 11) => {
-        const cleaned = sanitize(text);
-        if (!cleaned) return;
-        setFont("normal", size);
-        const lines = pdf.splitTextToSize(cleaned, pageWidth - margin * 2);
-        lines.forEach((line) => {
-          ensureSpace();
-          pdf.text(line, margin, cursorY);
-          cursorY += lineHeight;
-        });
-      };
-
-      const addBulletList = (items: string[]) => {
-        if (!items.length) return;
-        setFont("normal", 11);
-        items.forEach((item) => {
-          const cleaned = sanitize(item);
-          if (!cleaned) return;
-          const lines = pdf.splitTextToSize(`• ${cleaned}`, pageWidth - margin * 2);
-          lines.forEach((line) => {
-            ensureSpace();
-            pdf.text(line, margin, cursorY);
-            cursorY += lineHeight;
-          });
-        });
-      };
-
-      const safeDatasetName = (datasetName || "analysis").replace(/[^a-z0-9_\-]+/gi, "_");
-
-      addHeading("Copsight AI – Dashboard Analysis Report", 18);
-      setFont("normal", 10);
-      pdf.text(`Generated: ${new Date().toLocaleString()}`, margin, cursorY);
-      cursorY += lineHeight;
-      pdf.text(`Dataset: ${datasetName || "Unknown Dataset"}`, margin, cursorY);
-      cursorY += lineHeight;
-      addSpacer();
-
-      if (structuredReport?.headline) {
-        addHeading(structuredReport.headline, 14);
-      }
-
-      if (structuredReport?.summary) {
-        addParagraph(structuredReport.summary, 12);
-        addSpacer();
-      }
-
-      if (narrativeText) {
-        addHeading("Narrative Insights", 13);
-        addParagraph(narrativeText, 11);
-        addSpacer();
-      }
-
-      if (metrics.length > 0) {
-        addHeading("Operational Metrics", 13);
-        addBulletList(
-          metrics.map((metric) => {
-            const contextText = metric.context ? ` – ${metric.context}` : "";
-            return `${metric.label}: ${metric.value}${contextText}`;
-          })
-        );
-        addSpacer();
-      }
-
-      if (hasPerformanceData) {
-        addHeading("Performance Distribution Summary", 13);
-        addParagraph(chartNarrative, 11);
-        addSpacer();
-
-        if (sortedPerformance.top.length > 0) {
-          addHeading("Top Performing Districts", 12);
-          addBulletList(
-            sortedPerformance.top.map(
-              (item, index) => `${index + 1}. ${item.district} – ${item.efficiency.toFixed(1)}%`
-            )
-          );
-          addSpacer();
-        }
-
-        if (sortedPerformance.bottom.length > 0) {
-          addHeading("Districts Requiring Support", 12);
-          addBulletList(
-            sortedPerformance.bottom.map(
-              (item, index) => `${index + 1}. ${item.district} – ${item.efficiency.toFixed(1)}%`
-            )
-          );
-          addSpacer();
-        }
-      }
-
-      if (graphFolder && graphFiles.length > 0) {
-        addHeading("Generated Visuals", 13);
-        addParagraph(
-          `Graphs are available on the server at /graphs/${graphFolder}. Each visualization is accompanied by AI context within the dashboard.`,
-          11
-        );
-        addSpacer();
-      }
-
-      pdf.save(`${safeDatasetName}_report.pdf`);
-      toast({ title: "Download Complete", description: "The analysis report has been saved as a PDF." });
-    } catch (error) {
-      console.error("Failed to export PDF", error);
-      toast({
-        title: "Export Failed",
-        description: "We could not generate the PDF. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsDownloading(false);
-    }
-  };
 
   const structuredReport = useMemo<ReportPayload | null>(() => {
     return typeof report === "object" && report !== null ? report : null;
@@ -454,6 +288,174 @@ export const DashboardAnalysis = () => {
 
     return { top, bottom };
   }, [hasPerformanceData, performanceData]);
+
+  const handleDownloadPdf = () => {
+    if (!hasReport) {
+      toast({
+        title: "No Report Available",
+        description: "Upload a dataset to generate a report before downloading.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsDownloading(true);
+
+    try {
+      const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+      const margin = 15;
+      const lineHeight = 7;
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      let cursorY = margin;
+
+      const ensureSpace = (height = lineHeight) => {
+        if (cursorY + height > pageHeight - margin) {
+          pdf.addPage();
+          cursorY = margin;
+        }
+      };
+
+      const setFont = (style: "normal" | "bold", size: number, color = 50) => {
+        pdf.setFont("helvetica", style);
+        pdf.setFontSize(size);
+        pdf.setTextColor(color);
+      };
+
+      const sanitize = (text: string) =>
+        text
+          .replace(/\r/g, "")
+          .replace(/\s+/g, " ")
+          .replace(/[#*_`]/g, "")
+          .replace(/>\s?/g, "")
+          .replace(/\[(.*?)\]\((.*?)\)/g, "$1")
+          .trim();
+
+      const addHeading = (text: string, size = 16) => {
+        const cleaned = sanitize(text);
+        if (!cleaned) return;
+        setFont("bold", size, 30);
+        ensureSpace();
+        pdf.text(cleaned, margin, cursorY);
+        cursorY += lineHeight;
+      };
+
+      const addSpacer = (height = lineHeight / 2) => {
+        ensureSpace(height);
+        cursorY += height;
+      };
+
+      const addParagraph = (text: string, size = 11) => {
+        const cleaned = sanitize(text);
+        if (!cleaned) return;
+        setFont("normal", size);
+        const lines = pdf.splitTextToSize(cleaned, pageWidth - margin * 2);
+        lines.forEach((line) => {
+          ensureSpace();
+          pdf.text(line, margin, cursorY);
+          cursorY += lineHeight;
+        });
+      };
+
+      const addBulletList = (items: string[]) => {
+        if (!items.length) return;
+        setFont("normal", 11);
+        items.forEach((item) => {
+          const cleaned = sanitize(item);
+          if (!cleaned) return;
+          const lines = pdf.splitTextToSize(`• ${cleaned}`, pageWidth - margin * 2);
+          lines.forEach((line) => {
+            ensureSpace();
+            pdf.text(line, margin, cursorY);
+            cursorY += lineHeight;
+          });
+        });
+      };
+
+      const safeDatasetName = (datasetName || "analysis").replace(/[^a-z0-9_\-]+/gi, "_");
+
+      addHeading("Copsight AI – Dashboard Analysis Report", 18);
+      setFont("normal", 10);
+      pdf.text(`Generated: ${new Date().toLocaleString()}`, margin, cursorY);
+      cursorY += lineHeight;
+      pdf.text(`Dataset: ${datasetName || "Unknown Dataset"}`, margin, cursorY);
+      cursorY += lineHeight;
+      addSpacer();
+
+      if (structuredReport?.headline) {
+        addHeading(structuredReport.headline, 14);
+      }
+
+      if (structuredReport?.summary) {
+        addParagraph(structuredReport.summary, 12);
+        addSpacer();
+      }
+
+      if (narrativeText) {
+        addHeading("Narrative Insights", 13);
+        addParagraph(narrativeText, 11);
+        addSpacer();
+      }
+
+      if (metrics.length > 0) {
+        addHeading("Operational Metrics", 13);
+        addBulletList(
+          metrics.map((metric) => {
+            const contextText = metric.context ? ` – ${metric.context}` : "";
+            return `${metric.label}: ${metric.value}${contextText}`;
+          })
+        );
+        addSpacer();
+      }
+
+      if (hasPerformanceData) {
+        addHeading("Performance Distribution Summary", 13);
+        addParagraph(chartNarrative, 11);
+        addSpacer();
+
+        if (sortedPerformance.top.length > 0) {
+          addHeading("Top Performing Districts", 12);
+          addBulletList(
+            sortedPerformance.top.map(
+              (item, index) => `${index + 1}. ${item.district} – ${item.efficiency.toFixed(1)}%`
+            )
+          );
+          addSpacer();
+        }
+
+        if (sortedPerformance.bottom.length > 0) {
+          addHeading("Districts Requiring Support", 12);
+          addBulletList(
+            sortedPerformance.bottom.map(
+              (item, index) => `${index + 1}. ${item.district} – ${item.efficiency.toFixed(1)}%`
+            )
+          );
+          addSpacer();
+        }
+      }
+
+      if (graphFolder && graphFiles.length > 0) {
+        addHeading("Generated Visuals", 13);
+        addParagraph(
+          `Graphs are available on the server at /graphs/${graphFolder}. Each visualization is accompanied by AI context within the dashboard.`,
+          11
+        );
+        addSpacer();
+      }
+
+      pdf.save(`${safeDatasetName}_report.pdf`);
+      toast({ title: "Download Complete", description: "The analysis report has been saved as a PDF." });
+    } catch (error) {
+      console.error("Failed to export PDF", error);
+      toast({
+        title: "Export Failed",
+        description: "We could not generate the PDF. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">

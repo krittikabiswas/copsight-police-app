@@ -1,6 +1,0 @@
-# Ignore local data file used for development
-data.py
-
-# Ignore Python bytecode cache directories and files
-__pycache__/
-*.py[cod]
