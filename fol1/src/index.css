@@ -92,6 +92,56 @@ All colors MUST be HSL.
     --sidebar-border: 220 20% 18%;
     --sidebar-ring: 220 90% 55%;
   }
+
+  /* Light mode theme */
+  .light {
+    --background: 220 14% 96%;
+    --foreground: 220 13% 20%;
+
+    --card: 220 20% 100%;
+    --card-foreground: 220 13% 20%;
+
+    --popover: 220 20% 100%;
+    --popover-foreground: 220 13% 20%;
+
+    --primary: 220 90% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 90%;
+    --secondary-foreground: 220 13% 20%;
+
+    --muted: 220 14% 88%;
+    --muted-foreground: 220 8% 48%;
+
+    --accent: 195 100% 50%;
+    --accent-foreground: 220 30% 8%;
+
+    --gold: 45 100% 60%;
+    --gold-foreground: 220 30% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 95%;
+    --ring: 220 90% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(220, 90%, 55%) 0%, hsl(195, 100%, 50%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(220, 20%, 100%) 0%, hsl(220, 14% 96%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220 14% 96%) 0%, hsl(220 10% 90%) 100%);
+    
+    --glow-primary: 0 0 12px hsla(220, 90%, 55%, 0.15);
+    --glow-accent: 0 0 16px hsla(195, 100%, 50%, 0.1);
+    
+    --sidebar-background: 220 20% 100%;
+    --sidebar-foreground: 220 13% 20%;
+    --sidebar-primary: 220 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 90%;
+    --sidebar-accent-foreground: 220 13% 20%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 220 90% 55%;
+  }
 }
 
 @layer base {

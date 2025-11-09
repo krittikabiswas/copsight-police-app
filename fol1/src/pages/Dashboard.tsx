@@ -6,6 +6,7 @@ import { BadgesSection } from "@/components/dashboard/BadgesSection";
 import { GISMapping } from "@/components/dashboard/GISMapping";
 import { Leaderboard } from "@/components/dashboard/Leaderboard";
 import { Community } from "@/components/dashboard/Community";
+import { AnalysisProvider } from "@/contexts/AnalysisContext";
 
 export type DashboardSection = "analysis" | "firreport" | "badges" | "gis" | "leaderboard" | "community";
 
@@ -32,12 +33,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-background">
-      <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
-      <main className="flex-1 p-6 md:p-8 overflow-auto">
-        {renderSection()}
-      </main>
-    </div>
+    <AnalysisProvider>
+      <div className="flex min-h-screen w-full bg-background">
+        <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+        <main className="flex-1 p-6 md:p-8 overflow-auto">
+          {renderSection()}
+        </main>
+      </div>
+    </AnalysisProvider>
   );
 };
 

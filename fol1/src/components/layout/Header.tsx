@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#002642] border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
       <div className="container mx-auto px-4 py-3">
         <nav className="flex items-center justify-between">
           {/* Logo/Brand */}
@@ -74,6 +75,7 @@ export const Header = () => {
             >
               Register
             </Button>
+            <ThemeToggle />
             <Button
               variant="default"
               onClick={handleLoginClick}

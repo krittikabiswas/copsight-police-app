@@ -1,6 +1,6 @@
-import google.generativeai as genai
+import google.generativeai as genai  # type: ignore
 import os
-import numpy as np
+import numpy as np  # type: ignore
 import re
 
 # --- Configure Gemini safely ---
@@ -27,6 +27,32 @@ def clean_gemini_output(text: str) -> str:
             continue
         cleaned.append(line.strip())
     return "\n".join(cleaned).strip()
+
+
+def build_fallback_narrative(dataset_name: str, districts: list[str], preds_scaled: np.ndarray) -> str:
+    if preds_scaled.size == 0:
+        return "No performance records were available to analyse."
+
+    avg = float(np.mean(preds_scaled))
+    top_idx = int(np.argmax(preds_scaled))
+    low_idx = int(np.argmin(preds_scaled))
+    top_value = float(preds_scaled[top_idx])
+    low_value = float(preds_scaled[low_idx])
+    top_name = districts[top_idx] if districts else f"Record {top_idx + 1}"
+    low_name = districts[low_idx] if districts else f"Record {low_idx + 1}"
+    spread = top_value - low_value
+    std_dev = float(np.std(preds_scaled))
+    above_target = sum(1 for score in preds_scaled if score >= avg)
+
+    narrative_lines = [
+        f"Operational briefing for {dataset_name.replace('_', ' ')} indicates an average efficiency of {avg:.1f}% across {preds_scaled.size} districts.",
+        f"{top_name} currently leads the drive with {top_value:.1f}%, while {low_name} trails at {low_value:.1f}%, creating a performance gap of {spread:.1f} points.",
+        f"Variation in the data is {'limited' if std_dev < 4 else 'moderate' if std_dev < 8 else 'high'}, with a standard deviation of {std_dev:.1f} points and {above_target} districts operating at or above the statewide average.",
+        f"Focus supervisory support on the bottom quartile to raise field execution rates and share the playbooks from {top_name} to accelerate catch-up.",
+        "Ensure data validation for districts showing steep swings and align weekly targets with the average benchmark for faster normalisation.",
+    ]
+
+    return " ".join(narrative_lines)
 
 
 def generate_analysis_report(dataset_name, df, preds):
@@ -100,7 +126,7 @@ STYLE:
         report_text = clean_gemini_output(response.text.strip())
 
         if not report_text:
-            report_text = "(No valid analysis generated.)"
+            report_text = build_fallback_narrative(dataset_name, districts, preds_scaled)
 
         # --- Headline generation ---
         headline_prompt = f"""
@@ -111,7 +137,9 @@ Top District: {top_district}, Lowest District: {low_district}, Average: {avg_pre
 """
         headline_resp = gemini_model.generate_content(headline_prompt)
         headline = clean_gemini_output(headline_resp.text.strip())
-        headline = headline.replace("\n", " ").strip() or f"{dataset_name} Performance Summary"
+        if not headline:
+            headline = f"{dataset_name.replace('_', ' ')} performance snapshot"
+        headline = headline.replace("\n", " ").strip()
 
         return {
             "summary": summary_line,
@@ -121,8 +149,9 @@ Top District: {top_district}, Lowest District: {low_district}, Average: {avg_pre
 
     except Exception as e:
         print(f"⚠️ Report generation failed: {e}")
+        fallback_text = build_fallback_narrative(dataset_name, districts, preds_scaled)
         return {
-            "summary": f"⚠️ {dataset_name}: Report generation failed",
-            "headline": "Report Error",
-            "analysis_report": f"(Error: {str(e)})"
+            "summary": summary_line,
+            "headline": f"{dataset_name.replace('_', ' ')} performance snapshot",
+            "analysis_report": fallback_text,
         }
